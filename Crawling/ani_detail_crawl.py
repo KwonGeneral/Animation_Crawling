@@ -3,7 +3,8 @@ import time
 from urllib.request import urlretrieve
 
 from openpyxl.styles import Font
-from selenium.common.exceptions import NoSuchElementException, TimeoutException, StaleElementReferenceException
+from selenium.common.exceptions import NoSuchElementException, TimeoutException, StaleElementReferenceException, \
+    InvalidArgumentException, WebDriverException
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
@@ -17,14 +18,15 @@ from selenium import webdriver
 
 def namuwiki_crawl(workbook, file_name, url, sheet):
     # 크롬드라이버 설정
+    if url == "" or url is None:
+        return
+
     chd = 'C:/dev_files/chd/chd.exe'
     driver = webdriver.Chrome(chd)
     driver.get(url)
-    # time.sleep(1)
 
     # 만화 정보
     cartoon_a_genre = "//*[@id='app']/div/div[2]/article/div[3]/div/div/div/div/table/tbody/tr/td[2]/div/a"
-    # cartoon_a_genre = "//*[@id='app']/div/div[2]/article/div[3]/div[2]/div/div/div/table/tbody/tr[3]/td[2]/div/a"
 
     cartoon_b_genre = "//*[@id='app']/div/div[2]/article/div[3]/div/div/div/div/table/tbody/tr[4]/td[2]/div/a"
 
@@ -45,9 +47,6 @@ def namuwiki_crawl(workbook, file_name, url, sheet):
 
     ani_check_b_genre = "//*[@id='app']/div/div[2]/article/div[3]/div/div/div/div/" \
                         "table/tbody/tr[3]/td/div/span/div/dl/dd/div/table/tbody/tr[1]/td[2]/div/strong/span"
-
-    # ani_a_genre = "//*[@id='app']/div/div[2]/article/div[3]/div[2]/div/div/div[1]/table/tbody/tr[" \
-    #           "4]/td/div/span/div/dl/dd/div/table/tbody/tr[1]/td[2]/div/a "
 
     total_genre = ""
 
@@ -136,8 +135,6 @@ def namuwiki_crawl(workbook, file_name, url, sheet):
                     pass
         else:
             try:
-                # btn = "//*[@id='app']/div/div[2]/article/div[3]/div[2]/div/div/div/table/tbody/tr[3]/td"
-
                 btn = "//*[@id='app']/div/div[2]/article/div[3]/div[2]/div/div/div/table/tbody/tr/td"
                 btn2 = "//*[@id='app']/div/div[2]/article/div[3]/div[3]/div/div/div/table/tbody/tr/td"
                 btn3 = "//*[@id='app']/div/div[2]/article/div[3]/div[4]/div/div/div/table/tbody/tr/td"
@@ -204,10 +201,18 @@ def namuwiki_crawl(workbook, file_name, url, sheet):
                 print("NoSuchElementException")
     except StaleElementReferenceException:
         print("StaleElementReferenceException")
+        driver.quit()
+        return total_genre
+    except InvalidArgumentException:
+        print("InvalidArgumentException")
+        driver.quit()
+        return total_genre
+    except WebDriverException:
+        print("WebDriverException")
+        driver.quit()
         return total_genre
 
     print("total_genre : ", total_genre)
-    # time.sleep(0.5)
     driver.quit()
 
     sheet.value = total_genre
