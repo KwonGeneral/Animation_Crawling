@@ -218,3 +218,103 @@ def namuwiki_crawl(workbook, file_name, url, sheet):
     sheet.value = total_genre
     workbook.save(file_name)
     return total_genre
+
+
+def google_crawl(woorkbook, file_name):
+    chd = 'C:/dev_files/chd/chd.exe'
+
+    options = webdriver.ChromeOptions()
+    options.add_argument("headless")
+    options.add_argument("window-size=1920x1080")
+    options.add_argument("disable-gpu")
+    options.add_argument("User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/537.36 (KHTML, "
+                         "like Gecko) Chrome/93.0.4577.82")
+    options.add_argument("lang=ko_KR")
+
+    driver = webdriver.Chrome(chd, options=options)
+
+    driver.get("https://www.google.com/search?q=.")
+
+    first_search = "/html/body/div[1]/div[3]/form/div[1]/div[1]/div[1]/div/div[2]/input"
+
+    search = "//*[@id='tsf']/div[1]/div[1]/div[2]/div/div[2]/input"
+
+    result_a_xpath = "/html/body/div[7]/div/div[6]/div/div/div/div[1]/div/div[1]/g-scrolling-carousel/" \
+                     "div[1]/div/div/a/div/div/div[2]/div"
+
+    result_b_xpath = "//*[@id='rso']/div[1]/div/div[1]/div[1]/div[1]/div/div[1]/div/div[1]/div[2]/div/div[1]"
+
+    result_c_xpath = "//*[@id='rso']/div[1]/div/div[1]/div/div[1]/div/div/div/div/div[1]/div/div/table/tbody/" \
+                     "tr[2]/td[2]"
+
+    result_d_xpath = "/html/body/div[7]/div/div[6]/div/div/div/div[1]/div/div[1]/g-scrolling-carousel/div[1]/" \
+                     "div/div/a/div/div/div/div"
+
+    sheet = woorkbook['Sheet']
+    for no in range(2, len(sheet["A"]) + 1):
+        try:
+            search_tag = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, search)))
+            search_tag.clear()
+
+            search_tag.send_keys(sheet["A" + str(no)].value + " 장르")
+            search_tag.send_keys(Keys.ENTER)
+
+            result_a = driver.find_elements_by_xpath(result_a_xpath)
+            result_b = driver.find_elements_by_xpath(result_b_xpath)
+            result_c = driver.find_elements_by_xpath(result_c_xpath)
+            result_d = driver.find_elements_by_xpath(result_d_xpath)
+
+            result_total = ""
+
+            if len(result_a) > 0:
+                for a in result_a:
+                    result_total = result_total + a.text + ", "
+            elif len(result_b) > 0:
+                for b in result_b:
+                    if "http" in b.text:
+                        for c in result_c:
+                            result_total = result_total + c.text + ", "
+                    else:
+                        result_total = result_total + b.text + ", "
+            elif len(result_c) > 0:
+                for c in result_c:
+                    result_total = result_total + c.text + ", "
+            elif len(result_d) > 0:
+                for d in result_d:
+                    result_total = result_total + d.text + ", "
+
+            if sheet["B" + str(no)].value is not None and sheet["B" + str(no)].value != "":
+                if result_total.replace(",", "").replace(" ", "") != "":
+                    result_total = result_total.rstrip(", ")
+                    result_total = ", " + result_total
+                    if result_total != ", ":
+                        sheet["B" + str(no)].value = sheet["B" + str(no)].value + result_total
+            else:
+                result_total = result_total.rstrip(", ").lstrip(",").lstrip(" ")
+                if sheet["B" + str(no)].value is None:
+                    sheet["B" + str(no)].value = ""
+                sheet["B" + str(no)].value = result_total
+
+            woorkbook.save(file_name)
+
+        except StaleElementReferenceException:
+            print("StaleElementReferenceException")
+        except InvalidArgumentException:
+            print("InvalidArgumentException")
+        except TimeoutException:
+            print("TimeoutException")
+            driver.quit()
+            options = webdriver.ChromeOptions()
+            options.add_argument("headless")
+            options.add_argument("disable-gpu")
+            options.add_argument("User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/537.36 "
+                                 "(KHTML, like Gecko) Chrome/93.0.4577.82")
+            driver = webdriver.Chrome(chd, options=options)
+            driver.get("https://www.google.com/search?q=.")
+        except NoSuchElementException:
+            print("NoSuchElementException")
+        except WebDriverException:
+            print("WebDriverException")
+
+    driver.quit()
+    return
