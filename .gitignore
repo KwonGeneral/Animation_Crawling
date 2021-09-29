@@ -144,7 +144,5 @@ cython_debug/
 static/image/*.*
 *.zip
 *.txt
-Crawling/backup/
-Crawling/backup2/
-Crawling/test.py
-Crawling/test2.py
+Crawling/backup*/
+Crawling/success/
