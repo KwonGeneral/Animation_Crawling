@@ -146,3 +146,4 @@ static/image/*.*
 *.txt
 Crawling/backup*/
 Crawling/success/
+Crawling/test/

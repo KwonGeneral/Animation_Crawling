@@ -18,8 +18,16 @@ from openpyxl import load_workbook
 #
 #         work_book.save(xl)
 
+# None 제거
+# for xl in xlsx_list:
+#     work_book = load_workbook(xl)
+#     sheet = work_book['Sheet']
+#     for no in range(2, len(sheet["A"]) + 1):
+#         sheet["B" + str(no)].value = str(sheet["B" + str(no)].value).replace("None", "")
+#
+#         work_book.save(xl)
 
-# # 치환
+# # 치환 1)
 # for xl in xlsx_list:
 #     work_book = load_workbook(xl)
 #     sheet = work_book['Sheet']
@@ -135,7 +143,7 @@ from openpyxl import load_workbook
 #
 #         work_book.save(xl)
 
-# 2차 치환
+# 치환 2)
 # for xl in xlsx_list:
 #     work_book = load_workbook(xl)
 #     sheet = work_book['Sheet']
@@ -171,7 +179,7 @@ from openpyxl import load_workbook
 #         work_book.save(xl)
 
 
-# 3차 치환
+# 치환 3)
 # for xl in xlsx_list:
 #     work_book = load_workbook(xl)
 #     sheet = work_book['Sheet']
@@ -205,7 +213,7 @@ from openpyxl import load_workbook
 #
 #         work_book.save(xl)
 
-# 4차 치환
+# 치환 4)
 # for xl in xlsx_list:
 #     work_book = load_workbook(xl)
 #     sheet = work_book['Sheet']
@@ -295,11 +303,170 @@ from openpyxl import load_workbook
 #
 #         work_book.save(xl)
 
-# None 제거
+
+# 치환 5)
 # for xl in xlsx_list:
 #     work_book = load_workbook(xl)
 #     sheet = work_book['Sheet']
 #     for no in range(2, len(sheet["A"]) + 1):
-#         sheet["B" + str(no)].value = str(sheet["B" + str(no)].value).replace("None", "")
+#         sheet["B" + str(no)].value = str(sheet["B" + str(no)].value)\
+#             .replace("판타지의 드라마", "판타지, 드라마")\
+#             .replace("19금의 로맨틱 코미디", "19금, 로맨틱, 코미디")\
+#             .replace("에로틱 코미디", "19금, 코미디")\
+#             .replace("연애 모험", "로맨스, 모험")\
+#             .replace("마법소녀의 마법", "마법소녀, 마법")\
+#             .replace("러브코미디", "로맨틱 코미디")\
+#             .replace("판타지T마법", "판타지, 마법")\
+#             .replace("드라마 로맨스", "드라마, 로맨스")\
+#             .replace("우주서부코미디", "우주, 코미디")\
+#             .replace("판타지 액션", "판타지, 액션")\
+#             .replace("SF 코미디", "SF, 코미디")\
+#             .replace("드라마 모험", "드라마, 모험")\
+#             .replace("요괴 호러", "요괴, 호러")\
+#             .replace("코미디 밀리터리", "코미디, 밀리터리")\
+#             .replace("9금", "19금")\
+#             .replace("19금미스터리", "19금, 미스터리")\
+#             .replace("드라마의 로맨스", "드라마, 로맨스")\
+#             .replace("코메디 등장인", "delete")\
+#             .replace("오토메이트의 판타지", "판타지")\
+#             .replace("스파이 미스터리", "스파이, 미스터리")\
+#             .replace("SF의 모험", "SF, 모험")\
+#             .replace("쿠킹 판타지", "음식, 판타지")\
+#             .replace("심리의 미스터리", "심리, 미스터리")\
+#             .replace("모험 메카", "모험, 메카")\
+#             .replace("스릴러액션", "스릴러, 액션")\
+#             .replace("학원 드라마", "학원, 드라마")\
+#             .replace("로맨스일상", "로맨스, 일상")\
+#             .replace("마녀의 로맨스", "로맨스")\
+#             .replace("액션 모험", "액션, 모험")\
+#             .replace("장편 드라마", "드라마")\
+#             .replace("역사 마법", "역사, 마법")\
+#             .replace("아포칼립스 SF", "아포칼립스, SF")\
+#             .replace("배틀의 코미디", "배틀, 코미디")\
+#             .replace("OST", "delete")\
+#             .replace("노가미 타케시", "delete")\
+#             .replace("전쟁의 드라마", "전쟁, 드라마")\
+#             .replace("패밀리 드라마", "가족, 드라마")\
+#             .replace("스포츠 왕도", "스포츠, 왕도")\
+#             .replace("마법 모험", "마법, 모험")\
+#             .replace("일상드라마", "일상, 드라마")\
+#             .replace("학원 배틀", "학원, 배틀")\
+#             .replace("SF의 공상과학", "SF, 공상과학")\
+#             .replace("역사의 드라마", "역사, 드라마")\
+#             .replace("스릴러 스릴러", "스릴러")\
+#             .replace("코미디의 판타지", "코미디, 판타지")\
+#             .replace("액션 월간 코미디 제논", "액션, 코미디")\
+#             .replace("역사야오이", "역사")\
+#             .replace("음악 비디오 일상", "음악, 일상")\
+#             .replace("액션 스릴러", "액션, 스릴러")\
+#             .replace("이능력 배틀", "이능력, 배틀")\
+#             .replace("삼양출판사", "delete")\
+#             .replace("야오이", "delete")\
+#             .replace("모험모험", "모험, 모험")\
+#             .replace("각본: 엔도 아키노리; 코나", "delete")\
+#             .replace("카 치아키", "delete")\
+#             .replace("개그의 밀리터리", "개그, 밀리터리")\
+#             .replace("혼고 미츠루", "delete")\
+#             .replace("법률 드라마", "드라마")\
+#             .replace("마술적 사실주의", "delete")\
+#             .replace("모험 코미디", "모험, 코미디")\
+#             .replace("일상 치유", "일상, 치유")\
+#             .replace("코미디 공상과학", "코미디, 공상과학")\
+#             .replace("핵 앤드 슬래시", "delete")\
+#             .replace("코미디 메카", "코미디, 메카")\
+#             .replace("19금의 로맨스", "19금, 로맨스")\
+#             .replace("로맨스 판타지", "로맨스, 판타지")\
+#             .replace("드라마의 판타지", "드라마, 판타지")\
+#             .replace("판타지 밀리터리", "판타지, 밀리터리")\
+#             .replace("드라마 메카", "드라마, 메카")\
+#             .replace("코미디의 모험", "코미디, 모험")\
+#             .replace("SF 스릴러의 드라마", "SF, 스릴러, 드라마")\
+#             .replace("호색로맨스 공상과학", "로맨스, 공상과학")\
+#             .replace("역사 드라마", "역사, 드라마")\
+#             .replace("코미디 로맨스", "코미디, 로맨스")\
+#             .replace("드라마의 모험", "드라마, 모험")\
+#             .replace("공포 호러", "공포, 호러")\
+#             .replace("일상 코미디", "일상, 코미디")\
+#             .replace("전쟁 이야기", "전쟁")\
+#             .replace("19금의 코미디", "19금, 코미디")\
+#             .replace("나가사키 켄지", "delete")\
+#             .replace("잡지 연재", "delete")\
+#             .replace("SF 학원 배틀", "SF, 학원, 배틀")\
+#             .replace("드라마 스페이스 오페라", "드라마, 스페이스 오페라")\
+#             .replace("오컬트 추리", "오컬트, 추리")\
+#             .replace("공상과학 코미디", "공상과학, 코미디")\
+#             .replace("누아르", "느와르")
 #
 #         work_book.save(xl)
+
+# temp_data = []
+#
+# genre_list = ["코미디", "블랙 코미디", "아포칼립스", "SF", "판타지", "모험", "메카", "액션", "스릴러", "일상", "드라마", "백합",
+#               "19금", "치유", "학원", "심리", "로맨스", "로맨틱 코미디", "가족", "드라마", "개그", "스포츠", "이세계", "미스터리",
+#               "공포", "공상과학", "시대극", "초자연", "세카이"]
+#
+# remove_data = ["delete", "배틀액션", "성인식"]
+#
+# remove_index = []
+#
+# for xl in xlsx_list:
+#     work_book = load_workbook(xl)
+#     sheet = work_book['Sheet']
+#     for no in range(2, len(sheet["A"])):
+#         tag_data = []
+#         genre_data = []
+#         for kk in sheet["B" + str(no)].value.split(", "):
+#             if kk not in genre_list:
+#                 tag_data.append(kk)
+#             else:
+#                 genre_data.append(kk)
+#
+#         sheet["B" + str(no)].value = ", ".join(genre_data)
+#         sheet["C" + str(no)].value = ", ".join(tag_data)
+#
+#         work_book.save(xl)
+
+# for xl in xlsx_list:
+#     work_book = load_workbook(xl)
+#     sheet = work_book['Sheet']
+#     for no in range(2, len(sheet["A"])):
+#         for kk in sheet["B"+str(no)].value.split(", "):
+#             if kk not in genre_data:
+#                 temp_data.append(kk)
+#         sheet["C" + str(no)].value = ", ".join(temp_data)
+
+# total_data = list(set(temp_data))
+# for index, nn in enumerate(total_data):
+#     if index % 60 == 0:
+#         print("\n\n")
+#     print(nn)
+
+# for xl in xlsx_list:
+#     work_book = load_workbook(xl)
+#     sheet = work_book['Sheet']
+#     for no in range(2, len(sheet["A"])):
+#         for kk in sheet["B"+str(no)].value.split(", "):
+#             if kk not in genre_list:
+#                 temp_data.append(kk)
+#
+# total_data = list(set(temp_data))
+#
+# for index, nn in enumerate(total_data):
+#     if index % 54 == 0:
+#         print("\n\n")
+#     print(nn)
+#
+# print(len(total_data))
+
+# for xl in xlsx_list:
+#     work_book = load_workbook(xl)
+#     sheet = work_book['Sheet']
+#     for no in range(2, len(sheet["A"])):
+#         for kk in sheet["B"+str(no)].value.split(", "):
+#             if kk in remove_data:
+#                 remove_index.append(xl + " " + str(no))
+#             elif kk == "" or kk is None:
+#                 remove_index.append(xl + " " + str(no))
+#
+# print(remove_index)
+

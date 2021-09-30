@@ -2,9 +2,9 @@
 
 # 엑셀파일
 from openpyxl import load_workbook
-from selenium.common.exceptions import InvalidArgumentException, WebDriverException
+from selenium.common.exceptions import InvalidArgumentException
 
-from Crawling.ani_detail_crawl import namuwiki_crawl, google_crawl, cueing_crawl
+from Crawling.prev.prev_detail_crawl import namuwiki_crawl, google_crawl, cueing_crawl
 
 print("\n 1 : 나무위키 크롤링\n")
 print(" 2 : 구글 크롤링\n")
