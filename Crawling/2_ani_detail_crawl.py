@@ -51,14 +51,14 @@ save_sheet['H1'].font = Font(name="나눔고딕", color="000000", bold=True)
 save_sheet['H1'].alignment = Alignment(horizontal='center')
 
 # 리스트 불러오기
-load_book = load_workbook("anime_detail_link.xlsx")
+load_book = load_workbook("ani_detail_link.xlsx")
 load_sheet = load_book['Sheet']
 
 title_xpath = "/html/body/div/div/div/article/div/h1"
 genre_check_xpath = "/html/body/div/div/div/article/div/div/p/span[1]"
 image_xpath = "/html/body/div/div/div/article/div/div/div/a/img"
 
-for no in range(2, len(load_sheet["A"])):
+for no in range(2, len(load_sheet["A"]) + 1):
     try:
         # 크롤링 주소 가져오기
         driver.get(load_sheet["B"+str(no)].value)
@@ -143,5 +143,5 @@ for no in range(2, len(load_sheet["A"])):
 
 driver.quit()
 
-save_book.save("anime_detail.xlsx")
+save_book.save("ani_detail.xlsx")
 

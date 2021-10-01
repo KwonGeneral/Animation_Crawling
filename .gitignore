@@ -145,3 +145,5 @@ static/image/*.*
 *.zip
 *.txt
 Crawling/prev/backup*/
+Crawling/123123/
+Crawling/backup/

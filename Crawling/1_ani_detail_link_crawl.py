@@ -31,15 +31,15 @@ save_sheet['B1'].font = Font(name="나눔고딕", color="000000", bold=True)
 save_sheet['B1'].alignment = Alignment(horizontal='center')
 
 # 리스트 불러오기
-load_book = load_workbook("anime_find_date.xlsx")
+load_book = load_workbook("ani_find_date.xlsx")
 load_sheet = load_book['Sheet']
 
 genre_count = 1
 detail_link_xpath = "/html/body/div/div/div/div/div/ul/div/li/p/a"
 
 count = 2
-for no in range(2, len(load_sheet["A"])):
-    driver.get(load_sheet["A"+str(no)].value)
+for no in range(2, len(load_sheet["A"]) + 1):
+    driver.get(load_sheet["B"+str(no)].value)
     detail_link = driver.find_elements_by_xpath(detail_link_xpath)
     for kk in detail_link:
         if kk.text != "":
@@ -50,5 +50,5 @@ for no in range(2, len(load_sheet["A"])):
 
 driver.quit()
 
-save_book.save("anime_detail_link.xlsx")
+save_book.save("ani_detail_link.xlsx")
 
