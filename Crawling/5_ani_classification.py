@@ -15,6 +15,8 @@ if select == "0":
     etc_list = []
     none_list = []
     blank_list = []
+    content_none_list = []
+    content_blank_list = []
     image_blank_list = []
     temp_genre_list = []
     for no in range(2, len(sheet["A"]) + 1):
@@ -35,6 +37,16 @@ if select == "0":
         if sheet["B"+str(no)].value == "" or sheet["B"+str(no)].value == " " or sheet["B"+str(no)].value is None:
             temp_blank = "공백(Blank) : [ " + str(no) + " ] " + sheet["A" + str(no)].value
             blank_list.append(temp_blank)
+
+        # 문제 확인 : 줄거리 None
+        if sheet["F" + str(no)].value == "None" or sheet["F" + str(no)].value is None or sheet["F" + str(no)].value == "":
+            temp_content_none = "줄거리 None : [ " + str(no) + " ] " + sheet["A" + str(no)].value
+            content_none_list.append(temp_content_none)
+
+        # 문제 확인 : 줄거리 공백
+        if sheet["F" + str(no)].value == "" or sheet["F" + str(no)].value == " " or sheet["F" + str(no)].value is None:
+            temp_content_blank = "줄거리 공백(Blank) : [ " + str(no) + " ] " + sheet["A" + str(no)].value
+            content_blank_list.append(temp_content_blank)
 
         # 문제 확인 : 장르가 1개인데, 대표 장르 목록에 포함되어 있지 않은 경우
         genre_list = ["스포츠", "추리", "코미디", "성전환", "먼치킨", "모험", "SF", "하렘", "드라마", "이세계",
@@ -65,6 +77,14 @@ if select == "0":
         print("\n\n 장르가 아닌 목록 ")
         for genre in temp_genre_list:
             print(genre)
+    if len(content_none_list) > 0:
+        print("\n\n 줄거리 None 목록 ")
+        for content_none in content_none_list:
+            print(content_none)
+    if len(content_blank_list) > 0:
+        print("\n\n 줄거리 공백(Blank) 목록 ")
+        for content_blank in content_blank_list:
+            print(content_blank)
 
 # 문자열 치환
 if select == "1":

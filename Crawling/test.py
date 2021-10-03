@@ -1,29 +1,106 @@
 import datetime
-import os
+import urllib.request
+
+from openpyxl import Workbook, load_workbook
+from openpyxl.styles import Font, Alignment
+from selenium import webdriver
+from selenium.common.exceptions import StaleElementReferenceException, InvalidArgumentException, TimeoutException, \
+    NoSuchElementException, WebDriverException
 import time
 
-from openpyxl import load_workbook
+chd = 'C:/dev_files/chd/chd.exe'
+options = webdriver.ChromeOptions()
+options.add_argument("headless")
+options.add_argument("window-size=1920x1080")
+options.add_argument("disable-gpu")
+options.add_argument("User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/537.36 (KHTML, "
+                     "like Gecko) Chrome/93.0.4577.82")
+options.add_argument("lang=ko_KR")
+driver = webdriver.Chrome(chd, options=options)
 
-a_xl = "ani_detail.xlsx"
-a_work_book = load_workbook(a_xl)
-a_sheet = a_work_book['Sheet']
+load_book = load_workbook("ani_detail_link.xlsx")
+load_sheet = load_book['Sheet']
 
-b_xl = "ani_detail_link.xlsx"
-b_work_book = load_workbook(b_xl)
-b_sheet = b_work_book['Sheet']
+work_book = load_workbook("ani_detail.xlsx")
+sheet = work_book["Sheet"]
 
-a_list = []
-b_list = []
+content_xpath = "//*[@id='animeContents']"
 
-for no in range(2, len(a_sheet["A"])):
-    a_list.append(a_sheet["A"+str(no)].value)
+for no in range(2, len(load_sheet["A"]) + 1):
+    try:
+        # 크롤링 주소 가져오기
+        driver.get(load_sheet["B" + str(no)].value)
+        time.sleep(5)
 
-for no in range(2, len(b_sheet["A"])):
-    b_list.append(b_sheet["A"+str(no)].value)
+        # XPATH 찾기
+        content_tag = driver.find_elements_by_xpath(content_xpath)
 
-for bbb in b_list:
-    if bbb not in a_list:
-        print(bbb)
+        # 줄거리 크롤링
+        if len(content_tag) > 0:
+            for kk in content_tag:
+                if str(kk.text).replace(" ", "") == "-":
+                    sheet["F" + str(no)].value = ""
+                    print("[ " + str(no) + " ] 줄거리 X : ", sheet["A" + str(no)].value)
+                else:
+                    sheet["F" + str(no)].value = kk.text
+                    print("[ " + str(no) + " ] 줄거리 O : ", sheet["A" + str(no)].value)
+        else:
+            sheet["F" + str(no)].value = ""
+            print("[ " + str(no) + " ] 줄거리 X : ", sheet["A" + str(no)].value)
+
+    except StaleElementReferenceException:
+        print("StaleElementReferenceException")
+    except InvalidArgumentException:
+        print("InvalidArgumentException")
+    except NoSuchElementException:
+        print("NoSuchElementException")
+    except TimeoutException:
+        print("TimeoutException")
+        driver.quit()
+
+        time.sleep(5)
+        options = webdriver.ChromeOptions()
+        options.add_argument("headless")
+        options.add_argument("window-size=1920x1080")
+        options.add_argument("disable-gpu")
+        options.add_argument("User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/537.36 (KHTML, "
+                             "like Gecko) Chrome/93.0.4577.82")
+        options.add_argument("lang=ko_KR")
+        driver = webdriver.Chrome(chd, options=options)
+
+    except WebDriverException:
+        print("WebDriverException")
+    except IndexError:
+        print("IndexError")
+    except:
+        print("Error 발생!")
+
+driver.quit()
+
+work_book.save("ani_detail.xlsx")
+
+# from openpyxl import load_workbook
+# 
+# a_xl = "ani_detail.xlsx"
+# a_work_book = load_workbook(a_xl)
+# a_sheet = a_work_book['Sheet']
+# 
+# b_xl = "ani_detail_link.xlsx"
+# b_work_book = load_workbook(b_xl)
+# b_sheet = b_work_book['Sheet']
+# 
+# a_list = []
+# b_list = []
+# 
+# for no in range(2, len(a_sheet["A"])):
+#     a_list.append(a_sheet["A"+str(no)].value)
+# 
+# for no in range(2, len(b_sheet["A"])):
+#     b_list.append(b_sheet["A"+str(no)].value)
+# 
+# for bbb in b_list:
+#     if bbb not in a_list:
+#         print(bbb)
 
 # update_file = open("update_log.txt", 'a')  # r : read, w : write, a : append
 # update_list = update_file.read().split("\n")

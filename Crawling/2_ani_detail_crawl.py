@@ -57,6 +57,7 @@ load_sheet = load_book['Sheet']
 title_xpath = "/html/body/div/div/div/article/div/h1"
 genre_check_xpath = "/html/body/div/div/div/article/div/div/p/span[1]"
 image_xpath = "/html/body/div/div/div/article/div/div/div/a/img"
+content_xpath = "//*[@id='animeContents']"
 
 for no in range(2, len(load_sheet["A"]) + 1):
     try:
@@ -95,6 +96,17 @@ for no in range(2, len(load_sheet["A"]) + 1):
 
             genre_count += 1
             date_count += 1
+
+            # 줄거리 크롤링
+            content_tag = driver.find_elements_by_xpath(content_xpath)
+            if len(content_tag) > 0:
+                for kk in content_tag:
+                    if str(kk.text).replace(" ", "") == "-":  # 줄거리 X
+                        save_sheet["F" + str(no)].value = ""
+                    else:  # 줄거리 O
+                        save_sheet["F" + str(no)].value = kk.text
+            else:  # 줄거리 X
+                save_sheet["F" + str(no)].value = ""
 
         # 대표 이미지 크롤링 및 다운로드
         for image in image_tag:
