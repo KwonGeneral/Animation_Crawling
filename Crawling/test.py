@@ -7,77 +7,87 @@ from selenium import webdriver
 from selenium.common.exceptions import StaleElementReferenceException, InvalidArgumentException, TimeoutException, \
     NoSuchElementException, WebDriverException
 import time
+import gdown
 
-chd = 'C:/dev_files/chd/chd.exe'
-options = webdriver.ChromeOptions()
-options.add_argument("headless")
-options.add_argument("window-size=1920x1080")
-options.add_argument("disable-gpu")
-options.add_argument("User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/537.36 (KHTML, "
-                     "like Gecko) Chrome/93.0.4577.82")
-options.add_argument("lang=ko_KR")
-driver = webdriver.Chrome(chd, options=options)
+google_path = 'https://drive.google.com/uc?id='
+file_id = '17KP7M-U7YSnqIp93QjnKiFH-pIUemL9i'
+output_name = 'sample.xlsx'
+gdown.download(google_path+file_id, output_name, quiet=False)
 
-load_book = load_workbook("ani_detail_link.xlsx")
-load_sheet = load_book['Sheet']
+# chd = 'C:/dev_files/chd/chd.exe'
+# options = webdriver.ChromeOptions()
+# options.add_argument("headless")
+# options.add_argument("window-size=1920x1080")
+# options.add_argument("disable-gpu")
+# options.add_argument("User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/537.36 (KHTML, "
+#                      "like Gecko) Chrome/93.0.4577.82")
+# options.add_argument("lang=ko_KR")
+# driver = webdriver.Chrome(chd, options=options)
+#
+# load_book = load_workbook("ani_detail_link.xlsx")
+# load_sheet = load_book['Sheet']
+#
+# work_book = load_workbook("ani_detail.xlsx")
+# sheet = work_book["Sheet"]
+#
+# content_xpath = "//*[@id='animeContents']"
+#
+# for no in range(2, len(load_sheet["A"]) + 1):
+#     try:
+#         # 크롤링 주소 가져오기
+#         driver.get(load_sheet["B" + str(no)].value)
+#         time.sleep(5)
+#
+#         # XPATH 찾기
+#         content_tag = driver.find_elements_by_xpath(content_xpath)
+#
+#         # 줄거리 크롤링
+#         if len(content_tag) > 0:
+#             for kk in content_tag:
+#                 if str(kk.text).replace(" ", "") == "-":
+#                     sheet["F" + str(no)].value = ""
+#                     print("[ " + str(no) + " ] 줄거리 X : ", sheet["A" + str(no)].value)
+#                 else:
+#                     sheet["F" + str(no)].value = kk.text
+#                     print("[ " + str(no) + " ] 줄거리 O : ", sheet["A" + str(no)].value)
+#         else:
+#             sheet["F" + str(no)].value = ""
+#             print("[ " + str(no) + " ] 줄거리 X : ", sheet["A" + str(no)].value)
+#
+#     except StaleElementReferenceException:
+#         print("StaleElementReferenceException")
+#     except InvalidArgumentException:
+#         print("InvalidArgumentException")
+#     except NoSuchElementException:
+#         print("NoSuchElementException")
+#     except TimeoutException:
+#         print("TimeoutException")
+#         driver.quit()
+#
+#         time.sleep(5)
+#         options = webdriver.ChromeOptions()
+#         options.add_argument("headless")
+#         options.add_argument("window-size=1920x1080")
+#         options.add_argument("disable-gpu")
+#         options.add_argument("User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/537.36 (KHTML, "
+#                              "like Gecko) Chrome/93.0.4577.82")
+#         options.add_argument("lang=ko_KR")
+#         driver = webdriver.Chrome(chd, options=options)
+#
+#     except WebDriverException:
+#         print("WebDriverException")
+#     except IndexError:
+#         print("IndexError")
+#     except:
+#         print("Error 발생!")
+#
+# driver.quit()
+#
+# work_book.save("ani_detail.xlsx")
 
-work_book = load_workbook("ani_detail.xlsx")
-sheet = work_book["Sheet"]
 
-content_xpath = "//*[@id='animeContents']"
 
-for no in range(2, len(load_sheet["A"]) + 1):
-    try:
-        # 크롤링 주소 가져오기
-        driver.get(load_sheet["B" + str(no)].value)
-        time.sleep(5)
 
-        # XPATH 찾기
-        content_tag = driver.find_elements_by_xpath(content_xpath)
-
-        # 줄거리 크롤링
-        if len(content_tag) > 0:
-            for kk in content_tag:
-                if str(kk.text).replace(" ", "") == "-":
-                    sheet["F" + str(no)].value = ""
-                    print("[ " + str(no) + " ] 줄거리 X : ", sheet["A" + str(no)].value)
-                else:
-                    sheet["F" + str(no)].value = kk.text
-                    print("[ " + str(no) + " ] 줄거리 O : ", sheet["A" + str(no)].value)
-        else:
-            sheet["F" + str(no)].value = ""
-            print("[ " + str(no) + " ] 줄거리 X : ", sheet["A" + str(no)].value)
-
-    except StaleElementReferenceException:
-        print("StaleElementReferenceException")
-    except InvalidArgumentException:
-        print("InvalidArgumentException")
-    except NoSuchElementException:
-        print("NoSuchElementException")
-    except TimeoutException:
-        print("TimeoutException")
-        driver.quit()
-
-        time.sleep(5)
-        options = webdriver.ChromeOptions()
-        options.add_argument("headless")
-        options.add_argument("window-size=1920x1080")
-        options.add_argument("disable-gpu")
-        options.add_argument("User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/537.36 (KHTML, "
-                             "like Gecko) Chrome/93.0.4577.82")
-        options.add_argument("lang=ko_KR")
-        driver = webdriver.Chrome(chd, options=options)
-
-    except WebDriverException:
-        print("WebDriverException")
-    except IndexError:
-        print("IndexError")
-    except:
-        print("Error 발생!")
-
-driver.quit()
-
-work_book.save("ani_detail.xlsx")
 
 # from openpyxl import load_workbook
 # 
